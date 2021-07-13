@@ -5,8 +5,8 @@ import fragment from 'shaders/text-fragment.glsl'
 import vertex from 'shaders/text-vertex.glsl'
 import { isOdd } from 'utils/math'
 
-import font from 'fonts/forma.json'
-import src from 'fonts/forma.png'
+import font from 'fonts/inter-medium.json'
+import src from 'fonts/inter-medium.png'
 
 export default class {
   constructor ({ gl, plane, renderer, subtitle, index }) {
@@ -86,7 +86,7 @@ export default class {
     const subtitle = new Text({
       align: 'left',
       font,
-      size: 0.025,
+      size: 0.04,
       //size: 0.05,
       text: this.subtitle,
       wordSpacing: 0,
@@ -112,6 +112,6 @@ export default class {
   }
 
   update () {
-    this.mesh.rotation.x = this.plane.rotation.x * 10
+    //this.mesh.rotation.x = this.plane.rotation.x 
   }
 }

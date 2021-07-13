@@ -9,7 +9,7 @@ module.exports = merge(config, {
   mode: 'production',
 
   output: {
-    path: path.join(__dirname, 'InfiniteCircularGallery')
+    path: path.join(__dirname, 'HandyCircularSlider')
   },
 
   plugins: [

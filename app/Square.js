@@ -5,9 +5,6 @@ import fragment from 'shaders/text-fragment.glsl'
 import vertex from 'shaders/text-vertex.glsl'
 import { isOdd } from 'utils/math'
 
-import font from 'fonts/forma.json'
-import src from 'fonts/forma.png'
-
 export default class {
   constructor ({ gl, plane, renderer, index }) {
     AutoBind(this)

@@ -5,8 +5,8 @@ import fragment from 'shaders/text-fragment.glsl'
 import vertex from 'shaders/text-vertex.glsl'
 import { isOdd } from 'utils/math'
 
-import font from 'fonts/freight.json'
-import src from 'fonts/freight.png'
+import font from 'fonts/inter-black.json'
+import src from 'fonts/inter-black.png'
 
 export default class {
   constructor ({ gl, plane, renderer, title, index }) {
@@ -87,7 +87,7 @@ export default class {
       align: 'left',
       font,
       letterSpacing: -0.05,
-      size: 0.08,
+      size: 0.2,
       //size: 0.15,
       text: this.title,
       wordSpacing: 0,
@@ -118,6 +118,6 @@ export default class {
   }
   
   update () {
-    this.mesh.rotation.x = this.plane.rotation.x * 10
+    //this.mesh.rotation.x = this.plane.rotation.x
   }
 }

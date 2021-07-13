@@ -13,6 +13,6 @@ module.exports = merge(config, {
   },
 
   output: {
-    path: path.join(__dirname, 'InfiniteCircularGallery')
+    path: path.join(__dirname, 'HandyCircularSlider')
   }
 })

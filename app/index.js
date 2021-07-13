@@ -11,12 +11,6 @@ import Image3 from 'images/3.jpg'
 import Image4 from 'images/4.jpg'
 import Image5 from 'images/5.jpg'
 import Image6 from 'images/6.jpg'
-import Image7 from 'images/7.jpg'
-import Image8 from 'images/8.jpg'
-import Image9 from 'images/9.jpg'
-import Image10 from 'images/10.jpg'
-import Image11 from 'images/11.jpg'
-import Image12 from 'images/12.jpg'
 
 import Media from './Media'
 import Background from './Background'
@@ -97,30 +91,12 @@ export default class App {
 
   createMedias () {
     this.mediasImages = [
-      { image: Image1, title: 'New Synagogue', subtitle: 'Hello, my name is Alex' },
-      { image: Image2, title: 'Paro Taktsang', subtitle: 'Hello, my name is Alex' },
-      { image: Image3, title: 'Petra', subtitle: 'Hello, my name is Alex' },
-      { image: Image4, title: 'Gooderham Building', subtitle: 'Hello, my name is Alex' },
-      { image: Image5, title: 'Catherine Palace', subtitle: 'Hello, my name is Alex' },
-      { image: Image6, title: 'Sheikh Zayed Mosque', subtitle: 'Hello, my name is Alex' },
-      { image: Image7, title: 'Madonna Corona', subtitle: 'Hello, my name is Alex' },
-      { image: Image8, title: 'Plaza de Espana', subtitle: 'Hello, my name is Alex' },
-      { image: Image9, title: 'Saint Martin', subtitle: 'Hello, my name is Alex' },
-      { image: Image10, title: 'Tugela Falls', subtitle: 'Hello, my name is Alex' },
-      { image: Image11, title: 'Sintra-Cascais', subtitle: 'Hello, my name is Alex' },
-      { image: Image12, title: 'The Prophet\'s Mosque', subtitle: 'Hello, my name is Alex' },
-      { image: Image1, title: 'New Synagogue', subtitle: 'Hello, my name is Alex' },
-      { image: Image2, title: 'Paro Taktsang', subtitle: 'Hello, my name is Alex' },
-      { image: Image3, title: 'Petra', subtitle: 'Hello, my name is Alex' },
-      { image: Image4, title: 'Gooderham Building', subtitle: 'Hello, my name is Alex' },
-      { image: Image5, title: 'Catherine Palace', subtitle: 'Hello, my name is Alex' },
-      { image: Image6, title: 'Sheikh Zayed Mosque', subtitle: 'Hello, my name is Alex' },
-      { image: Image7, title: 'Madonna Corona', subtitle: 'Hello, my name is Alex' },
-      { image: Image8, title: 'Plaza de Espana', subtitle: 'Hello, my name is Alex' },
-      { image: Image9, title: 'Saint Martin', subtitle: 'Hello, my name is Alex' },
-      { image: Image10, title: 'Tugela Falls', subtitle: 'Hello, my name is Alex' },
-      { image: Image11, title: 'Sintra-Cascais', subtitle: 'Hello, my name is Alex' },
-      { image: Image12, title: 'The Prophet\'s Mosque', subtitle: 'Hello, my name is Alex' },
+      { image: Image1, title: 'Abstracted Shapes', subtitle: 'By Danny Ivan' },
+      { image: Image2, title: 'Anemone', subtitle: 'By Leith Ben Abdessalem' },
+      { image: Image3, title: 'Fragments', subtitle: 'By Stu Ballinger' },
+      { image: Image4, title: 'Experimental Imagery', subtitle: 'By Danny Ivan' },
+      { image: Image5, title: 'High Visceral', subtitle: 'By Psychedelic Porn Crumpets' },
+      { image: Image6, title: 'Dream Drop', subtitle: 'By Stu Ballinger' },
     ]
 
     this.medias = this.mediasImages.map(({ image, title, subtitle }, index) => {

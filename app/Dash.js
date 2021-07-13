@@ -1,4 +1,4 @@
-import { Color, Mesh, Plane, Program } from 'ogl'
+import { Color, Mesh, Plane, Program, Vec2 } from 'ogl'
 
 import AutoBind from 'auto-bind'
 
@@ -33,6 +33,7 @@ createMesh() {
         fragment,
         uniforms: {
           uColor: { value: new Color('#ffffff') },
+          //uResolution: { value: new Vec2(1800,1200) },
         },
         transparent: true
       })
@@ -45,6 +46,7 @@ createMesh() {
       this.mesh.scale.x = 0.1
       this.mesh.scale.y = 0.0075
 
+
       if(isOdd(this.index)){
         this.mesh.position.x = this.plane.scale.x * 0.60
     } else {
@@ -55,7 +57,7 @@ createMesh() {
   }
 
   update () {
-    this.mesh.rotation.x = this.plane.rotation.x * 10
+    //this.mesh.rotation.x = this.plane.rotation.x
 
   }
 }

@@ -52,11 +52,12 @@ export default class {
         uImageSizes: { value: [0, 0] },
         uViewportSizes: { value: [this.viewport.width, this.viewport.height] },
         uSpeed: { value: 0 },
+        uScrollY: { value: 1 },
         uTime: { value: 100 * Math.random() }
       },
       transparent: true
     })
-    
+
     const image = new Image()
     
     image.src = this.image
@@ -74,13 +75,19 @@ export default class {
     })
     
     this.plane.setParent(this.scene)
+    
+    this.newPlane = new Mesh(this.gl, {
+      geometry: this.geometry,
+      program: this.program
+    })
+    this.newPlane.setParent(this.scene)
   }
   
   createTitle () {
 
     const title = new Title({
       gl: this.gl,
-      plane: this.plane,
+      plane: this.newPlane,
       renderer: this.renderer,
       title: this.title,
       index: this.index
@@ -89,7 +96,7 @@ export default class {
 
     const subtitles = new Subtitle({
       gl: this.gl,
-      plane: this.plane,
+      plane: this.newPlane,
       renderer: this.renderer,
       subtitle: this.subtitle,
       index: this.index
@@ -98,7 +105,7 @@ export default class {
     
     const dash = new Dash({
       gl: this.gl,
-      plane: this.plane,
+      plane: this.newPlane,
       renderer: this.renderer,
       title: this.title,
       index: this.index
@@ -118,13 +125,16 @@ export default class {
   
   update (scroll, direction) {
     this.plane.position.y = this.y - scroll.current - this.extra
+    this.newPlane.position.y = this.y - scroll.current - this.extra
     //this.plane.position.y = Math.cos((this.plane.position.x / this.widthTotal) * Math.PI) * 75 - 74.5
-    this.plane.rotation.x = map(this.plane.position.y, -this.widthTotal, this.widthTotal, Math.PI, -Math.PI)
+    this.plane.rotation.x = map(this.plane.position.y, -this.widthTotal, this.widthTotal, Math.PI /2, -Math.PI /2)
+    this.newPlane.rotation.x = map(this.newPlane.position.y, -this.widthTotal, this.widthTotal, Math.PI /2, -Math.PI /2)
     
     this.speed = scroll.current - scroll.last
 
     this.program.uniforms.uTime.value += 0.04
     this.program.uniforms.uSpeed.value = this.speed
+    this.program.uniforms.uScrollY.value = Math.abs(this.plane.position.y)
     
     const planeOffset = this.plane.scale.y / 2
     const viewportOffset = this.viewport.width
@@ -138,18 +148,20 @@ export default class {
       this.isBefore = false
       this.isAfter = false
     }
-
-    if(isOdd(this.index) === 0){
-      this.plane.position.x = 8;
-    } else {
-      this.plane.position.x = -8;
-    }
-
+    
     if (direction === 'left' && this.isAfter) {
       this.extra += this.widthTotal
-
+      
       this.isBefore = false
       this.isAfter = false
+    }
+
+    if(isOdd(this.index) === 0){
+      this.plane.position.x = this.plane.scale.x;
+      this.newPlane.position.x = this.newPlane.scale.x;
+    } else {
+      this.plane.position.x = -this.plane.scale.x;
+      this.newPlane.position.x = -this.newPlane.scale.x;
     }
 
     if (this.titles) {
@@ -177,6 +189,7 @@ export default class {
       this.viewport = viewport
 
       this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height]
+      this.newPlane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height]
     }
 
     this.scale = this.screen.height / 1500
@@ -184,9 +197,13 @@ export default class {
     this.plane.scale.y = this.viewport.height * (900 * this.scale) / this.screen.height
     this.plane.scale.x = this.viewport.width * (700 * this.scale) / this.screen.width
 
-    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y]
+    this.newPlane.scale.y = this.viewport.height * (900 * this.scale) / this.screen.height
+    this.newPlane.scale.x = this.viewport.width * (700 * this.scale) / this.screen.width
 
-    this.padding = 5
+    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y]
+    this.newPlane.program.uniforms.uPlaneSizes.value = [this.newPlane.scale.x, this.newPlane.scale.y]
+
+    this.padding = 2
 
     this.width = this.plane.scale.x + this.padding
     this.widthTotal = this.width * this.length

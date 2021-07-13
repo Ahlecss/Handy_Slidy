@@ -9,17 +9,16 @@ import font from 'fonts/forma.json'
 import src from 'fonts/forma.png'
 
 export default class {
-  constructor ({ gl, plane, renderer, subtitle, index }) {
+  constructor ({ gl, plane, renderer, index }) {
     AutoBind(this)
 
     this.gl = gl
     this.plane = plane
     this.renderer = renderer
-    this.subtitle = subtitle
     this.index = index
 
-    this.createShader()
-    this.createMesh()
+    //this.createShader()
+    //this.createMesh()
   }
 
   createShader () {
@@ -83,14 +82,7 @@ export default class {
   }
 
   createMesh () {
-    const subtitle = new Text({
-      align: 'left',
-      font,
-      size: 0.025,
-      //size: 0.05,
-      text: this.subtitle,
-      wordSpacing: 0,
-    })
+    const subtitle = new Plane()
 
     const geometry = new Geometry(this.gl, {
       position: { size: 3, data: subtitle.buffers.position },
@@ -102,16 +94,14 @@ export default class {
     geometry.computeBoundingBox()
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
-    this.mesh.position.y = -this.plane.scale.y * -0.2 - 0.3
+    this.mesh.position.y = -this.plane.scale.y * 0.5 - 0.3
     if(isOdd(this.index)){
-      this.mesh.position.x = this.plane.scale.x * 0.55
+      this.mesh.position.x = -this.plane.scale.x * 0.2
     } else {
-      this.mesh.position.x = -this.plane.scale.x * 3
+      this.mesh.position.x = -this.plane.scale.x * 0.8
     }
+    this.mesh.rotation.x = this.plane.rotation.x
     this.mesh.setParent(this.plane)
   }
 
-  update () {
-    this.mesh.rotation.x = this.plane.rotation.x * 10
-  }
 }

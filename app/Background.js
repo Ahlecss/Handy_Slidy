@@ -16,14 +16,14 @@ export default class {
       vertex,
       fragment,
       uniforms: {
-        uColor: { value: new Color('#000000') }
+        uColor: { value: new Color('#ffffff') },
       },
       transparent: true
     })
 
     /*this.meshes = []
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 5; i++) {
       let mesh = new Mesh(this.gl, {
         geometry,
         program,
@@ -31,8 +31,8 @@ export default class {
 
       const scale = random(0.75, 1)
 
-      mesh.scale.x = 1.6 * scale
-      mesh.scale.y = 0.9 * scale
+      mesh.scale.x = 3 * scale
+      mesh.scale.y = 0.1 * scale
 
       mesh.speed = random(0.75, 1)
 
@@ -41,15 +41,17 @@ export default class {
       mesh.x = mesh.position.x = random(-this.viewport.width * 0.5, this.viewport.width * 0.5)
       mesh.y = mesh.position.y = random(-this.viewport.height * 0.5, this.viewport.height * 0.5)
 
+      mesh.rotation.x = 0.3;
+
       this.meshes.push(mesh)
 
       this.scene.addChild(mesh)
     }*/
   }
-/*
+
   update (scroll, direction) {
     this.meshes.forEach(mesh => {
-      mesh.position.x = mesh.x - scroll.current * mesh.speed - mesh.xExtra
+      mesh.position.y = mesh.y - scroll.current * mesh.speed - mesh.xExtra
 
       const viewportOffset = this.viewport.width * 0.5
       const widthTotal = this.viewport.width + mesh.scale.x
@@ -77,5 +79,5 @@ export default class {
         mesh.position.y -= this.viewport.height + mesh.scale.y
       }
     })
-  }*/
+  }
 }

@@ -7,6 +7,8 @@ import { map, isOdd } from 'utils/math'
 
 import Subtitle from './Subtitle'
 import Title from './Title'
+import Dash from './Dash'
+import Square from './Square'
 
 export default class {
   constructor ({ geometry, gl, image, index, length, renderer, scene, screen, title, subtitle, viewport }) {
@@ -23,6 +25,9 @@ export default class {
     this.title = title
     this.subtitle = subtitle
     this.viewport = viewport
+    this.titles = []
+    this.subtitles = []
+    this.dashes = []
 
     this.createShader()
     this.createMesh()
@@ -72,14 +77,7 @@ export default class {
   }
   
   createTitle () {
-    const subtitle = new Subtitle({
-      gl: this.gl,
-      plane: this.plane,
-      renderer: this.renderer,
-      subtitle: this.subtitle,
-      index: this.index
-    })
-    
+
     const title = new Title({
       gl: this.gl,
       plane: this.plane,
@@ -87,6 +85,35 @@ export default class {
       title: this.title,
       index: this.index
     })
+    this.titles.push(title)
+
+    const subtitles = new Subtitle({
+      gl: this.gl,
+      plane: this.plane,
+      renderer: this.renderer,
+      subtitle: this.subtitle,
+      index: this.index
+    })
+    this.subtitles.push(subtitles)
+    
+    const dash = new Dash({
+      gl: this.gl,
+      plane: this.plane,
+      renderer: this.renderer,
+      title: this.title,
+      index: this.index
+    })
+    this.dashes.push(dash)
+
+    /*const square = new Square({
+      gl: this.gl,
+      plane: this.plane,
+      renderer: this.renderer,
+      title: this.title,
+      index: this.index
+    })*/
+
+
   }
   
   update (scroll, direction) {
@@ -113,18 +140,28 @@ export default class {
     }
 
     if(isOdd(this.index) === 0){
-      this.plane.position.x = 5;
+      this.plane.position.x = 8;
     } else {
-      this.plane.position.x = -5;
+      this.plane.position.x = -8;
     }
-    console.log(this.plane.position.x)
-
 
     if (direction === 'left' && this.isAfter) {
       this.extra += this.widthTotal
 
       this.isBefore = false
       this.isAfter = false
+    }
+
+    if (this.titles) {
+      this.titles.forEach(title => title.update())
+    }
+
+    if (this.subtitles) {
+      this.subtitles.forEach(subtitle => subtitle.update())
+    }
+
+    if (this.dashes) {
+      this.dashes.forEach(dash => dash.update())
     }
   }
 

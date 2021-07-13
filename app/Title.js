@@ -84,10 +84,11 @@ export default class {
 
   createMesh () {
     const title = new Text({
-      align: 'center',
+      align: 'left',
       font,
       letterSpacing: -0.05,
       size: 0.08,
+      //size: 0.15,
       text: this.title,
       wordSpacing: 0,
     })
@@ -102,13 +103,21 @@ export default class {
     geometry.computeBoundingBox()
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
-    this.mesh.position.y = -this.plane.scale.y * 0.5 - 0.085
+    this.mesh.position.y = -this.plane.scale.y * -0.2 - 0.06
+    //this.mesh.position.y = -this.plane.scale.y * -0.2 - 0.085
     if(isOdd(this.index)){
-      this.mesh.position.x = -this.plane.scale.x * 0.2
+      this.mesh.position.x = this.plane.scale.x * 0.55
+      //this.mesh.position.x = -this.plane.scale.x * 0.4
+      //this.mesh.position.x = this.plane.position.x + 0.8
     } else {
-      this.mesh.position.x = -this.plane.scale.x * 0.8
-    }
-    this.mesh.rotation.x = this.plane.rotation.x
+      this.mesh.position.x = -this.plane.scale.x * 3
+      //this.mesh.position.x = -this.plane.scale.x * 0.8
+      //this.mesh.position.x = this.plane.position.x - 3
+    }    
     this.mesh.setParent(this.plane)
+  }
+  
+  update () {
+    this.mesh.rotation.x = this.plane.rotation.x * 10
   }
 }

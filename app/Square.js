@@ -70,39 +70,28 @@ export default class {
   }
 
   createMesh() {
-    console.log('create square')
     const geometry = new Plane(this.gl, {
       heightSegments: 50,
       widthSegments: 100
     })
 
-    //geometry.computeBoundingBox()
+    geometry.computeBoundingBox()
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
-    //this.mesh.position.y = -this.plane.scale.y 
-    //this.mesh.position.z = -50;
     if (isOdd(this.index) === 0) {
       this.mesh.position.x = this.mesh.scale.x * 7;
     } else {
       this.mesh.position.x = -this.mesh.scale.x * 7;
     }
-    //this.mesh.rotation.x = this.plane.rotation.x
     this.mesh.scale.x = 10
     this.mesh.scale.y = 12
-    //this.mesh.x = 10
-    //this.mesh.y = 10
+
     this.scene.addChild(this.mesh)
   }
 
   update(scroll, direction, y, heightTotal) {
-    //this.program.uniforms.uOddL.value = this.oddL
-    //this.program.uniforms.uOddR.value = this.oddR
-    //this.program.uniforms.uScrollY.value = this.plane.position.y
 
-    console.log(y, scroll.current, this.extra)
     this.mesh.position.y = y - scroll.current - this.extra
-    console.log(this.mesh.position.y);
-    //this.plane.position.y = Math.cos((this.plane.position.x / this.widthTotal) * Math.PI) * 75 - 74.5
     this.mesh.rotation.x = map(this.mesh.position.y, -heightTotal, heightTotal, Math.PI / 2, -Math.PI / 2)
 
     this.speed = scroll.current - scroll.last
@@ -130,12 +119,6 @@ export default class {
       this.isBefore = false
       this.isAfter = false
     }
-/*
-    if (isOdd(this.index) === 0) {
-      this.mesh.position.x = this.mesh.scale.x;
-    } else {
-      this.mesh.position.x = -this.mesh.scale.x;
-    }*/
   }
 
 }

@@ -179,7 +179,6 @@ export default class {
 
     if (direction === 'right' && this.isBefore) {
       this.extra -= this.heightTotal
-      console.log(this.extra)
 
       this.isBefore = false
       this.isAfter = false
@@ -246,8 +245,6 @@ export default class {
 
     this.height = this.plane.scale.y + this.padding
     this.heightTotal = this.height * this.length
-
-    console.log(this.height, this.heightTotal)
 
     this.y = this.height * this.index
   }

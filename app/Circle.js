@@ -54,20 +54,11 @@ export default class {
   }
 
   createMesh() {
-    console.log('create square')
     const geometry = new Plane(this.gl)
 
     //geometry.computeBoundingBox()
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
-    //this.mesh.position.y = -this.plane.scale.y 
-    //this.mesh.position.z = -50;
-    /*if (isOdd(this.index) === 0) {
-      this.mesh.position.x = this.plane.scale.x;
-    } else {
-      this.mesh.position.x = this.plane.scale.x;
-    }*/
-    //this.mesh.rotation.x = this.plane.rotation.x
 
     this.mesh.scale.x = 50
     this.mesh.scale.y = 50
@@ -80,7 +71,6 @@ export default class {
     this.program.uniforms.uOddL.value = this.oddL
     this.program.uniforms.uOddR.value = this.oddR
     this.program.uniforms.uScrollY.value = this.plane.position.y
-    //console.log(this.plane.position.y)
   }
 
 }

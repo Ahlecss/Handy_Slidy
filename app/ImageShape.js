@@ -131,7 +131,7 @@ export default class {
     })
     this.squares.push(square)
 
-    const circle = new Circle({
+    /*const circle = new Circle({
       gl: this.gl,
       plane: this.plane,
       renderer: this.renderer,
@@ -140,7 +140,7 @@ export default class {
       scene: this.scene,
       index: this.index
     })
-    this.circles.push(circle)
+    this.circles.push(circle)*/
   }
   
   update(scroll, direction) {

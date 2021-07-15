@@ -88,7 +88,6 @@ export default class {
   }
 
   createTitle() {
-
     
     const title = new Title({
       gl: this.gl,
@@ -131,7 +130,7 @@ export default class {
     })
     this.squares.push(square)
 
-    /*const circle = new Circle({
+    const circle = new Circle({
       gl: this.gl,
       plane: this.plane,
       renderer: this.renderer,
@@ -140,7 +139,7 @@ export default class {
       scene: this.scene,
       index: this.index
     })
-    this.circles.push(circle)*/
+    this.circles.push(circle);
   }
   
   update(scroll, direction) {
@@ -213,7 +212,7 @@ export default class {
       this.dashes.forEach(dash => dash.update())
     }
     if (this.squares) {
-      this.squares.forEach(square => square.update())
+      this.squares.forEach(square => square.update(scroll, direction, this.y, this.heightTotal))
     }
     if (this.circles) {
       this.circles.forEach(circle => circle.update())

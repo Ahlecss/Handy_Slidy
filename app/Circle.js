@@ -36,8 +36,8 @@ export default class {
   createShader() {
     this.program = new Program(this.gl, {
       cullFace: null,
-      depthTest: false,
-      depthWrite: false,
+      depthTest: true,
+      depthWrite: true,
       transparent: true,
       fragment,
       vertex,
@@ -73,7 +73,6 @@ export default class {
     this.mesh.scale.y = 50
     this.mesh.x = 10
     this.mesh.y = 10
-    console.log(this.mesh.position.x)
     this.scene.addChild(this.mesh)
   }
 

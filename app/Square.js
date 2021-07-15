@@ -3,11 +3,14 @@ import { Color, Geometry, Mesh, Program, Text, Plane, Texture, Vec2 } from 'ogl'
 
 import fragment from 'shaders/square-fragment.glsl'
 import vertex from 'shaders/square-vertex.glsl'
-import { isOdd } from 'utils/math'
+import { map, isOdd } from 'utils/math'
+
+import rectangle from 'images/rectangle.jpg'
 
 export default class {
   constructor({ gl, plane, renderer, scene, viewport, index }) {
     AutoBind(this)
+    this.extra = 0
 
     this.gl = gl
     this.plane = plane
@@ -34,54 +37,105 @@ export default class {
   }
 
   createShader() {
+    const texture = new Texture(this.gl, {
+      generateMipmaps: false
+    })
+
     this.program = new Program(this.gl, {
-      cullFace: null,
-      depthTest: false,
-      depthWrite: false,
-      transparent: true,
+      depthTest: true,
+      depthWrite: true,
       fragment,
       vertex,
       uniforms: {
-        uColor: { value: new Color('#ffffff') },
-        uResolution: { value: new Vec2(200, 200) },
-        uOddL: { value: this.oddL },
-        uOddR: { value: this.oddR },
-        //uTime: { value: 1 * Math.random() },
+        tMap: { value: texture },
+        uPlaneSizes: { value: [0, 0] },
+        uImageSizes: { value: [0, 0] },
+        uViewportSizes: { value: [this.viewport.width, this.viewport.height] },
+        uSpeed: { value: 0 },
         uScrollY: { value: 1 },
+        uResolution: { value: new Vec2(this.viewport.width * 100, this.viewport.height * 100) },
+        uTime: { value: 100 * Math.random() }
       },
       transparent: true
     })
+
+    const image = new Image()
+
+    image.src = rectangle
+    image.onload = _ => {
+      texture.image = image
+
+      this.program.uniforms.uImageSizes.value = [image.naturalWidth, image.naturalHeight]
+    }
   }
 
   createMesh() {
     console.log('create square')
-    const geometry = new Plane(this.gl)
+    const geometry = new Plane(this.gl, {
+      heightSegments: 50,
+      widthSegments: 100
+    })
 
     //geometry.computeBoundingBox()
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
     //this.mesh.position.y = -this.plane.scale.y 
     //this.mesh.position.z = -50;
-    /*if (isOdd(this.index) === 0) {
-      this.mesh.position.x = this.plane.scale.x;
+    if (isOdd(this.index) === 0) {
+      this.mesh.position.x = this.mesh.scale.x * 7;
     } else {
-      this.mesh.position.x = this.plane.scale.x;
-    }*/
+      this.mesh.position.x = -this.mesh.scale.x * 7;
+    }
     //this.mesh.rotation.x = this.plane.rotation.x
-
-    this.mesh.scale.x = 50
-    this.mesh.scale.y = 50
-    this.mesh.x = 10
-    this.mesh.y = 10
-    console.log(this.mesh.position.x)
+    this.mesh.scale.x = 10
+    this.mesh.scale.y = 12
+    //this.mesh.x = 10
+    //this.mesh.y = 10
     this.scene.addChild(this.mesh)
   }
 
-  update() {
-    this.program.uniforms.uOddL.value = this.oddL
-    this.program.uniforms.uOddR.value = this.oddR
-    this.program.uniforms.uScrollY.value = this.plane.position.y
-    //console.log(this.plane.position.y)
+  update(scroll, direction, y, heightTotal) {
+    //this.program.uniforms.uOddL.value = this.oddL
+    //this.program.uniforms.uOddR.value = this.oddR
+    //this.program.uniforms.uScrollY.value = this.plane.position.y
+
+    console.log(y, scroll.current, this.extra)
+    this.mesh.position.y = y - scroll.current - this.extra
+    console.log(this.mesh.position.y);
+    //this.plane.position.y = Math.cos((this.plane.position.x / this.widthTotal) * Math.PI) * 75 - 74.5
+    this.mesh.rotation.x = map(this.mesh.position.y, -heightTotal, heightTotal, Math.PI / 2, -Math.PI / 2)
+
+    this.speed = scroll.current - scroll.last
+
+    this.program.uniforms.uTime.value += 0.04
+    this.program.uniforms.uSpeed.value = this.speed
+    this.program.uniforms.uScrollY.value = Math.abs(this.mesh.position.y)
+
+    const planeOffset = this.mesh.scale.y / 2
+    const viewportOffset = this.viewport.width
+
+    this.isBefore = this.mesh.position.y + planeOffset < -viewportOffset
+    this.isAfter = this.mesh.position.y - planeOffset > viewportOffset
+
+    if (direction === 'right' && this.isBefore) {
+      this.extra -= heightTotal
+
+      this.isBefore = false
+      this.isAfter = false
+    }
+
+    if (direction === 'left' && this.isAfter) {
+      this.extra += heightTotal
+
+      this.isBefore = false
+      this.isAfter = false
+    }
+/*
+    if (isOdd(this.index) === 0) {
+      this.mesh.position.x = this.mesh.scale.x;
+    } else {
+      this.mesh.position.x = -this.mesh.scale.x;
+    }*/
   }
 
 }

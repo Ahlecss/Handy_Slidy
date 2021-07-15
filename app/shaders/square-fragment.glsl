@@ -1,4 +1,4 @@
-precision highp float;
+/*precision highp float;
 
 uniform float uAlpha;
 uniform vec3 uColor;
@@ -49,16 +49,43 @@ void main() {
 
      color = vec3(pct1 - pct2);
 
-
-    /*gl_FragColor.rgb = color;
-    //step machin alpha
-    gl_FragColor.a = .8;*/
-
     gl_FragColor.rgb = color;
-    //step machin alpha
 
     float s1 = step(0.1, gl_FragColor.r);
 
     float alpha = step(0.1, s1);
     gl_FragColor.a = alpha;
+}*/
+
+precision highp float;
+
+uniform vec2 uImageSizes;
+uniform vec2 uPlaneSizes;
+uniform vec2 uResolution;
+uniform sampler2D tMap;
+
+varying vec2 vUv;
+
+void main() {
+
+  vec2 st = gl_FragCoord.xy/uResolution.xy;
+
+  vec2 ratio = vec2(
+    min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
+    min((uPlaneSizes.y / uPlaneSizes.x) / (uImageSizes.y / uImageSizes.x), 1.0)
+  );
+
+  vec2 uv = vec2(
+    vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
+    vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+  );
+
+  vec3 texture = texture2D(tMap, uv).rgb;
+
+  gl_FragColor.rgb = texture;
+  float s1 = step(0.1, gl_FragColor.r);
+
+  float alpha = step(0.1, s1);
+  gl_FragColor.a = alpha;
+  
 }

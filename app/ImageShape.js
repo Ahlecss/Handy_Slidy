@@ -1,4 +1,4 @@
-import { Mesh, Program, Texture } from 'ogl'
+import { Mesh, Program, Texture, Vec2 } from 'ogl'
 
 import fragment from 'shaders/image-fragment.glsl'
 import vertex from 'shaders/image-vertex.glsl'
@@ -9,9 +9,10 @@ import Subtitle from './Subtitle'
 import Title from './Title'
 import Dash from './Dash'
 import Square from './Square'
+import Circle from './Circle'
 
 export default class {
-  constructor ({ geometry, gl, image, index, length, renderer, scene, screen, title, subtitle, viewport }) {
+  constructor({ geometry, gl, image, index, length, renderer, scene, screen, title, subtitle, viewport }) {
     this.extra = 0
 
     this.geometry = geometry
@@ -28,6 +29,8 @@ export default class {
     this.titles = []
     this.subtitles = []
     this.dashes = []
+    this.squares = []
+    this.circles = []
 
     this.createShader()
     this.createMesh()
@@ -35,12 +38,12 @@ export default class {
 
     this.onResize()
   }
-  
-  createShader () {
+
+  createShader() {
     const texture = new Texture(this.gl, {
       generateMipmaps: false
     })
-    
+
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -53,42 +56,45 @@ export default class {
         uViewportSizes: { value: [this.viewport.width, this.viewport.height] },
         uSpeed: { value: 0 },
         uScrollY: { value: 1 },
+        uResolution: { value: new Vec2(this.viewport.width * 100, this.viewport.height * 100) },
         uTime: { value: 100 * Math.random() }
       },
       transparent: true
     })
 
     const image = new Image()
-    
+
     image.src = this.image
     image.onload = _ => {
       texture.image = image
-      
+
       this.program.uniforms.uImageSizes.value = [image.naturalWidth, image.naturalHeight]
     }
   }
-  
-  createMesh () {
+
+  createMesh() {
     this.plane = new Mesh(this.gl, {
       geometry: this.geometry,
       program: this.program
     })
-    
+
     this.plane.setParent(this.scene)
-    
+
     this.newPlane = new Mesh(this.gl, {
       geometry: this.geometry,
       program: this.program
     })
     this.newPlane.setParent(this.scene)
   }
-  
-  createTitle () {
 
+  createTitle() {
+
+    
     const title = new Title({
       gl: this.gl,
       plane: this.newPlane,
       renderer: this.renderer,
+      viewport: this.viewport,
       title: this.title,
       index: this.index
     })
@@ -98,44 +104,74 @@ export default class {
       gl: this.gl,
       plane: this.newPlane,
       renderer: this.renderer,
+      viewport: this.viewport,
       subtitle: this.subtitle,
       index: this.index
     })
     this.subtitles.push(subtitles)
-    
+
     const dash = new Dash({
       gl: this.gl,
       plane: this.newPlane,
       renderer: this.renderer,
+      viewport: this.viewport,
       title: this.title,
       index: this.index
     })
     this.dashes.push(dash)
-
-    /*const square = new Square({
+    
+    const square = new Square({
       gl: this.gl,
       plane: this.plane,
       renderer: this.renderer,
+      viewport: this.viewport,
       title: this.title,
+      scene: this.scene,
       index: this.index
-    })*/
+    })
+    this.squares.push(square)
 
-
+    const circle = new Circle({
+      gl: this.gl,
+      plane: this.plane,
+      renderer: this.renderer,
+      viewport: this.viewport,
+      title: this.title,
+      scene: this.scene,
+      index: this.index
+    })
+    this.circles.push(circle)
   }
   
-  update (scroll, direction) {
+  update(scroll, direction) {
+    /*
+    // influencia idea
+    const angle = (2 * Math.PI) / this.length
+
+    let aa = this.index * angle * 10
+    console.log(aa);
+
+    let step = this.index/this.length * Math.PI*2
+
+    this.plane.position.x = (Math.cos(step) * 100)
+    this.plane.position.y = ( Math.cos(this.index * Math.PI) * 20)
+    this.plane.position.z = (Math.sin(step) * 100)
+
+    this.plane.rotation.x = -aa - Math.PI / 2
+    console.log(this.plane.rotation.x)
+    */
     this.plane.position.y = this.y - scroll.current - this.extra
     this.newPlane.position.y = this.y - scroll.current - this.extra
     //this.plane.position.y = Math.cos((this.plane.position.x / this.widthTotal) * Math.PI) * 75 - 74.5
-    this.plane.rotation.x = map(this.plane.position.y, -this.widthTotal, this.widthTotal, Math.PI /2, -Math.PI /2)
-    this.newPlane.rotation.x = map(this.newPlane.position.y, -this.widthTotal, this.widthTotal, Math.PI /2, -Math.PI /2)
-    
+    this.plane.rotation.x = map(this.plane.position.y, -this.heightTotal, this.heightTotal, Math.PI / 2, -Math.PI / 2)
+    this.newPlane.rotation.x = map(this.newPlane.position.y, -this.heightTotal, this.heightTotal, Math.PI / 2, -Math.PI / 2)
+
     this.speed = scroll.current - scroll.last
 
     this.program.uniforms.uTime.value += 0.04
     this.program.uniforms.uSpeed.value = this.speed
     this.program.uniforms.uScrollY.value = Math.abs(this.plane.position.y)
-    
+
     const planeOffset = this.plane.scale.y / 2
     const viewportOffset = this.viewport.width
 
@@ -143,20 +179,21 @@ export default class {
     this.isAfter = this.plane.position.y - planeOffset > viewportOffset
 
     if (direction === 'right' && this.isBefore) {
-      this.extra -= this.widthTotal
+      this.extra -= this.heightTotal
+      console.log(this.extra)
 
       this.isBefore = false
       this.isAfter = false
     }
-    
+
     if (direction === 'left' && this.isAfter) {
-      this.extra += this.widthTotal
-      
+      this.extra += this.heightTotal
+
       this.isBefore = false
       this.isAfter = false
     }
 
-    if(isOdd(this.index) === 0){
+    if (isOdd(this.index) === 0) {
       this.plane.position.x = this.plane.scale.x;
       this.newPlane.position.x = this.newPlane.scale.x;
     } else {
@@ -175,12 +212,15 @@ export default class {
     if (this.dashes) {
       this.dashes.forEach(dash => dash.update())
     }
+    if (this.squares) {
+      this.squares.forEach(square => square.update())
+    }
+    if (this.circles) {
+      this.circles.forEach(circle => circle.update())
+    }
   }
 
-  /**
-   * Events.
-   */
-  onResize ({ screen, viewport } = {}) {
+  onResize({ screen, viewport } = {}) {
     if (screen) {
       this.screen = screen
     }
@@ -205,9 +245,11 @@ export default class {
 
     this.padding = 2
 
-    this.width = this.plane.scale.x + this.padding
-    this.widthTotal = this.width * this.length
+    this.height = this.plane.scale.y + this.padding
+    this.heightTotal = this.height * this.length
 
-    this.y = this.width * this.index
+    console.log(this.height, this.heightTotal)
+
+    this.y = this.height * this.index
   }
 }

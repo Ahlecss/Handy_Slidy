@@ -11,7 +11,7 @@
 
 html {
   background: $color-background;
-  color: $color-gray;
+  color: $color-background;
   font-size: calc(100vw / 1920 * 10);
   height: 100%;
   left: 0;
@@ -52,15 +52,6 @@ canvas {
   }
 }
 
-a {
-  @extend %link--hidden;
-
-  color: $color-gray;
-  outline: none;
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    outline: none;
-  }
+pre{ 
+  display: none;
 }

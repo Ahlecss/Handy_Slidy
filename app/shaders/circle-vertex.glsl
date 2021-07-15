@@ -17,9 +17,5 @@ void main() {
 
   vec3 p = position;
 
-  //p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
-
-  p.z = (cos(p.y * 2.0) * 1.5 * 10.) * (0.1) + 1.;
-
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 }

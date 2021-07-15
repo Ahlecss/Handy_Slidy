@@ -1,5 +1,5 @@
 {
-  "name": "infinite-circular-webgl-gallery",
+  "name": "handy-circular-slider",
   "version": "1.0.0",
   "scripts": {
     "start": "cross-env NODE_ENV=dev webpack serve --progress --config webpack.config.development.js",

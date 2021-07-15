@@ -1,8 +1,8 @@
 import AutoBind from 'auto-bind'
 import { Color, Geometry, Mesh, Program, Text, Plane, Texture, Vec2 } from 'ogl'
 
-import fragment from 'shaders/square-fragment.glsl'
-import vertex from 'shaders/square-vertex.glsl'
+import fragment from 'shaders/circle-fragment.glsl'
+import vertex from 'shaders/circle-vertex.glsl'
 import { isOdd } from 'utils/math'
 
 export default class {

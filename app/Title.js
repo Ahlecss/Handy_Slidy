@@ -1,5 +1,5 @@
 import AutoBind from 'auto-bind'
-import { Color, Geometry, Mesh, Program, Text, Texture } from 'ogl'
+import { Color, Geometry, Mesh, Program, Text, Texture, Vec2 } from 'ogl'
 
 import fragment from 'shaders/text-fragment.glsl'
 import vertex from 'shaders/text-vertex.glsl'
@@ -9,12 +9,13 @@ import font from 'fonts/inter-black.json'
 import src from 'fonts/inter-black.png'
 
 export default class {
-  constructor ({ gl, plane, renderer, title, index }) {
+  constructor ({ gl, plane, renderer, viewport, title, index }) {
     AutoBind(this)
 
     this.gl = gl
     this.plane = plane
     this.renderer = renderer
+    this.viewport = viewport
     this.title = title
     this.index = index
 
@@ -77,6 +78,7 @@ export default class {
       vertex: vertexShader,
       uniforms: {
         uColor: { value: new Color('#ffffff') },
+        uResolution: { value: new Vec2(this.viewport.width * 100, this.viewport.height * 100) },
         tMap: { value: texture }
       }
     })

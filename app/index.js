@@ -12,7 +12,7 @@ import Image4 from 'images/4.jpg'
 import Image5 from 'images/5.jpg'
 import Image6 from 'images/6.jpg'
 
-import Media from './Media'
+import ImageShape from './ImageShape'
 import Background from './Background'
 
 export default class App {
@@ -35,7 +35,7 @@ export default class App {
     this.onResize()
 
     this.createGeometry()
-    this.createMedias()
+    this.createImages()
     this.createBackground()
 
     this.update()
@@ -46,7 +46,7 @@ export default class App {
   }
 
   createPreloader () {
-    Array.from(this.mediasImages).forEach(({ image: source }) => {
+    Array.from(this.imagesList).forEach(({ image: source }) => {
       const image = new Image()
 
       this.loaded = 0
@@ -55,7 +55,7 @@ export default class App {
       image.onload = _ => {
         this.loaded += 1
 
-        if (this.loaded === this.mediasImages.length) {
+        if (this.loaded === this.imagesList.length) {
           document.documentElement.classList.remove('loading')
           document.documentElement.classList.add('loaded')
         }
@@ -89,8 +89,8 @@ export default class App {
     })
   }
 
-  createMedias () {
-    this.mediasImages = [
+  createImages () {
+    this.imagesList = [
       { image: Image1, title: 'Abstracted Shapes', subtitle: 'By Danny Ivan' },
       { image: Image2, title: 'Anemone', subtitle: 'By Leith Ben Abdessalem' },
       { image: Image3, title: 'Fragments', subtitle: 'By Stu Ballinger' },
@@ -99,22 +99,23 @@ export default class App {
       { image: Image6, title: 'Dream Drop', subtitle: 'By Stu Ballinger' },
     ]
 
-    this.medias = this.mediasImages.map(({ image, title, subtitle }, index) => {
-      const media = new Media({
+    this.images = this.imagesList.map(({ image, title, subtitle }, index) => {
+      const img = new ImageShape({
         geometry: this.planeGeometry,
         gl: this.gl,
         image,
         index,
-        length: this.mediasImages.length,
+        length: this.imagesList.length,
         renderer: this.renderer,
         scene: this.scene,
         screen: this.screen,
         title,
         subtitle,
+        totalImage: this.imagesList.length,
         viewport: this.viewport
       })
 
-      return media
+      return img
     })
   }
 
@@ -126,9 +127,8 @@ export default class App {
     })
   }
 
-  /**
-   * Events.
-   */
+  // Events
+
   onTouchDown (event) {
     this.isDown = true
 
@@ -161,9 +161,9 @@ export default class App {
   }
 
   onCheck () {
-    const { width } = this.medias[0]
-    const itemIndex = Math.round(Math.abs(this.scroll.target) / width)
-    const item = width * itemIndex
+    const { height } = this.images[0]
+    const itemIndex = Math.round(Math.abs(this.scroll.target) / height)
+    const item = height * itemIndex
 
     if (this.scroll.target < 0) {
       this.scroll.target = -item
@@ -172,9 +172,8 @@ export default class App {
     }
   }
 
-  /**
-   * Resize.
-   */
+  // Resize
+
   onResize () {
     this.screen = {
       height: window.innerHeight,
@@ -196,17 +195,16 @@ export default class App {
       width
     }
 
-    if (this.medias) {
-      this.medias.forEach(media => media.onResize({
+    if (this.images) {
+      this.images.forEach(image => image.onResize({
         screen: this.screen,
         viewport: this.viewport
       }))
     }
   }
 
-  /**
-   * Update.
-   */
+  // Update
+
   update () {
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease)
 
@@ -216,13 +214,13 @@ export default class App {
       this.direction = 'left'
     }
 
-    if (this.medias) {
-      this.medias.forEach(media => media.update(this.scroll, this.direction))
+    if (this.images) {
+      this.images.forEach(image => image.update(this.scroll, this.direction))
     }
 
-    /*if (this.background) {
+    if (this.background) {
       this.background.update(this.scroll, this.direction)
-    }*/
+    }
 
     this.renderer.render({
       scene: this.scene,
@@ -234,9 +232,8 @@ export default class App {
     window.requestAnimationFrame(this.update.bind(this))
   }
 
-  /**
-   * Listeners.
-   */
+  // Listeners
+
   addEventListeners () {
     window.addEventListener('resize', this.onResize.bind(this))
 

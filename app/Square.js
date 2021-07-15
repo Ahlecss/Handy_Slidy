@@ -79,12 +79,12 @@ export default class {
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
     if (isOdd(this.index) === 0) {
-      this.mesh.position.x = this.mesh.scale.x * 7;
+      this.mesh.position.x = this.mesh.scale.x * 5;
     } else {
-      this.mesh.position.x = -this.mesh.scale.x * 7;
+      this.mesh.position.x = -this.mesh.scale.x * 5;
     }
     this.mesh.scale.x = 10
-    this.mesh.scale.y = 12
+    this.mesh.scale.y = 13
 
     this.scene.addChild(this.mesh)
   }

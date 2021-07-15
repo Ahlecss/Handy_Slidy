@@ -86,6 +86,6 @@ void main() {
   float s1 = step(0.1, gl_FragColor.r);
 
   float alpha = step(0.1, s1);
-  gl_FragColor.a = alpha;
+  gl_FragColor.a = alpha - 0.65;
   
 }

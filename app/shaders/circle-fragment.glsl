@@ -30,5 +30,5 @@ void main() {
 
     float t = 1. - smoothstep(0.0, 0.1, abs(0.1-d));
     gl_FragColor.rgb = uColor;
-    gl_FragColor.a = 1.*t;
+    gl_FragColor.a = 1.*t - 0.4;
 }

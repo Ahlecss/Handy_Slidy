@@ -105,14 +105,14 @@ export default class {
     geometry.computeBoundingBox()
 
     this.mesh = new Mesh(this.gl, { geometry, program: this.program })
-    this.mesh.position.y = -this.plane.scale.y * -0.2 - 0.06
+    this.mesh.position.y = -this.plane.scale.y * -0.3
     //this.mesh.position.y = -this.plane.scale.y * -0.2 - 0.085
     if(isOdd(this.index)){
-      this.mesh.position.x = this.plane.scale.x * 0.55
+      this.mesh.position.x = this.plane.scale.x * 0.3
       //this.mesh.position.x = -this.plane.scale.x * 0.4
       //this.mesh.position.x = this.plane.position.x + 0.8
     } else {
-      this.mesh.position.x = -this.plane.scale.x * 3
+      this.mesh.position.x = -this.plane.scale.x * 2.7
       //this.mesh.position.x = -this.plane.scale.x * 0.8
       //this.mesh.position.x = this.plane.position.x - 3
     }    

@@ -11,8 +11,6 @@ export default class {
     this.scene = scene
     this.viewport = viewport
 
-    console.log(this.viewport)
-
     this.geometry = new Plane(this.gl)
     this.program = new Program(this.gl, {
       vertex,

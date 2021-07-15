@@ -47,6 +47,7 @@ export default class {
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
+      transparent: true,
       fragment,
       vertex,
       uniforms: {
@@ -232,11 +233,11 @@ export default class {
 
     this.scale = this.screen.height / 1500
 
-    this.plane.scale.y = this.viewport.height * (900 * this.scale) / this.screen.height
-    this.plane.scale.x = this.viewport.width * (700 * this.scale) / this.screen.width
+    this.plane.scale.y = this.viewport.height * (1080 * this.scale) / this.screen.height
+    this.plane.scale.x = this.viewport.width * (850 * this.scale) / this.screen.width
 
-    this.newPlane.scale.y = this.viewport.height * (900 * this.scale) / this.screen.height
-    this.newPlane.scale.x = this.viewport.width * (700 * this.scale) / this.screen.width
+    this.newPlane.scale.y = this.viewport.height * (1080 * this.scale) / this.screen.height
+    this.newPlane.scale.x = this.viewport.width * (850 * this.scale) / this.screen.width
 
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y]
     this.newPlane.program.uniforms.uPlaneSizes.value = [this.newPlane.scale.x, this.newPlane.scale.y]

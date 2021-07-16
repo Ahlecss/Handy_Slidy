@@ -7,7 +7,7 @@ uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
 uniform float uTime;
-uniform float uScrollY;
+//uniform float uScrollY;
 uniform float uSpeed;
 
 varying vec2 vUv;

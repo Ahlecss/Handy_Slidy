@@ -10,8 +10,6 @@ precision mediump float;
 #define PI 3.14159265359
 
 uniform vec2 uResolution;
-uniform vec2 u_mouse;
-uniform float uTime;
 uniform float uOddL;
 uniform float uOddR;
 uniform float uScrollY;
